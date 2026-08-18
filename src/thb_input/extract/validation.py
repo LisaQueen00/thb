@@ -91,6 +91,18 @@ def validate_semantics(result: ExtractResult, record: InputRecord) -> None:
     if any(phrase in result.event_summary for phrase in certainty_upgrades):
         raise _semantic_error("event_summary upgrades possible intention to certainty")
 
+    internal_markers = (
+        "claim_",
+        "seg_",
+        "reported_by_",
+        "epistemic_status",
+        "supporting_segments",
+        "medium confidence",
+        "high confidence",
+    )
+    if any(marker in result.event_summary.lower() for marker in internal_markers):
+        raise _semantic_error("event_summary exposes internal analysis vocabulary")
+
     _validate_unique_ids(result)
 
 

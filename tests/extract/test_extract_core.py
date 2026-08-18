@@ -244,6 +244,13 @@ def test_validation_failure_gets_one_controlled_retry() -> None:
     assert "VALIDATION RETRY" in client.prompts[1].system
 
 
+def test_event_summary_rejects_internal_analysis_vocabulary() -> None:
+    payload = empty_result("根据 claim_001 和 seg_001，当前存在一项要求。")
+    with pytest.raises(ExtractError) as caught:
+        ExtractService(FakeLLM(payload), validation_retries=0).process(make_request())
+    assert caught.value.code is ExtractErrorCode.SEMANTIC_VALIDATION_FAILED
+
+
 def test_schema_rejects_unknown_fields() -> None:
     payload = empty_result()
     payload["strategy"] = "拒绝"

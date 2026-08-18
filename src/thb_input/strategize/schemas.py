@@ -43,6 +43,7 @@ class Tone(StrEnum):
     NEUTRAL = "neutral"
     WARM = "warm"
     FIRM = "firm"
+    FORMAL = "formal"
     CONCISE = "concise"
 
 

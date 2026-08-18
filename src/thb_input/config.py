@@ -37,6 +37,12 @@ class Settings(BaseSettings):
     strategize_output_mode: Literal["json_schema", "json_object"] = "json_schema"
     strategize_validation_retries: int = Field(default=2, ge=0, le=2)
     strategize_timeout: float = Field(default=120.0, gt=0)
+    respond_model: str | None = None
+    respond_temperature: float = Field(default=0.2, ge=0, le=2)
+    respond_max_tokens: int = Field(default=2048, ge=1)
+    respond_output_mode: Literal["json_schema", "json_object"] = "json_schema"
+    respond_validation_retries: int = Field(default=2, ge=0, le=2)
+    respond_timeout: float = Field(default=120.0, gt=0)
 
 
 @lru_cache
