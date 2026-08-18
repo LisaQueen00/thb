@@ -12,7 +12,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = "THB Input"
+    app_name: str = "THB"
     env: str = "development"
     log_level: str = "INFO"
     llm_api_key: str | None = None
@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     strip_output_mode: Literal["json_schema", "json_object"] = "json_schema"
     llm_api_style: Literal["chat_completions", "responses"] = "chat_completions"
     strip_validation_retries: int = Field(default=1, ge=0, le=2)
+    extract_model: str | None = None
+    extract_temperature: float = Field(default=0.0, ge=0, le=2)
+    extract_max_tokens: int = Field(default=8192, ge=1)
+    extract_output_mode: Literal["json_schema", "json_object"] = "json_schema"
+    extract_validation_retries: int = Field(default=2, ge=0, le=2)
+    extract_timeout: float = Field(default=120.0, gt=0)
 
 
 @lru_cache

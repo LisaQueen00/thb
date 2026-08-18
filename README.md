@@ -26,6 +26,18 @@ Strip 接收 Input 产生的 canonical input object，使用大模型识别沟�
 
 接口：`POST /api/v1/strip`
 
+### Extract / Analyze
+
+Extract / Analyze 将 Canonical Input 与 Strip Result 重建为可追溯的事件模型：
+
+- 区分对方主张、用户背景、共同支持信息、推断、冲突和未知；
+- 提取请求、承诺、时间约束、责任、条件与后果；
+- 分析事件关系、预设、潜台词、可能意图和证据支持的风险；
+- 每项重要结论保留来源与 Strip segment 证据；
+- 不决定策略、不生成人格评价或正式回复。
+
+接口：`POST /api/v1/extract`
+
 ## 技术栈
 
 - Python 3.12+

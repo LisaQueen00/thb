@@ -16,9 +16,15 @@ class LLMClient(Protocol):
 class OpenAICompatibleLLMClient:
     """Minimal provider boundary for OpenAI-compatible chat completion APIs."""
 
-    def __init__(self, settings: Settings, http_client: httpx.Client | None = None) -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        http_client: httpx.Client | None = None,
+        schema_name: str = "thb_strip_result",
+    ) -> None:
         self.settings = settings
         self.http_client = http_client
+        self.schema_name = schema_name
 
     def complete_structured(self, prompt: StripPrompt) -> object:
         if not self.settings.llm_api_key:
@@ -94,7 +100,7 @@ class OpenAICompatibleLLMClient:
             payload["response_format"] = {
                 "type": "json_schema",
                 "json_schema": {
-                    "name": "thb_strip_result",
+                    "name": self.schema_name,
                     "strict": True,
                     "schema": prompt.output_schema,
                 },
@@ -109,7 +115,7 @@ class OpenAICompatibleLLMClient:
         if self.settings.strip_output_mode == "json_schema":
             output_format: dict[str, object] = {
                 "type": "json_schema",
-                "name": "thb_strip_result",
+                "name": self.schema_name,
                 "strict": True,
                 "schema": prompt.output_schema,
             }
