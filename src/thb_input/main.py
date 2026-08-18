@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from thb_input import __version__
 from thb_input.api.v1.extract import router as extract_router
 from thb_input.api.v1.input import router as input_router
+from thb_input.api.v1.strategize import router as strategize_router
 from thb_input.api.v1.strip import router as strip_router
 from thb_input.config import get_settings
 
@@ -16,6 +17,7 @@ app = FastAPI(
 app.include_router(input_router, prefix="/api/v1")
 app.include_router(strip_router, prefix="/api/v1")
 app.include_router(extract_router, prefix="/api/v1")
+app.include_router(strategize_router, prefix="/api/v1")
 
 
 @app.get("/health", tags=["system"])

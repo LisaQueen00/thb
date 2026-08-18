@@ -38,6 +38,18 @@ Extract / Analyze 将 Canonical Input 与 Strip Result 重建为可追溯的事�
 
 接口：`POST /api/v1/extract`
 
+### Strategize
+
+Strategize根据经过验证的Event Model和可选用户目标生成可执行策略：
+
+- 提供2–4个具有实质差异的处理方向；
+- 明确行动、可接受事项、不应认领事项、收益、代价和风险；
+- 保留Extract中的冲突、未知和事实边界；
+- 为Respond提供结构化回复约束，但不直接生成回复；
+- 支持用户修改目标后重新生成策略，无需重跑上游阶段。
+
+接口：`POST /api/v1/strategize`
+
 ## 技术栈
 
 - Python 3.12+

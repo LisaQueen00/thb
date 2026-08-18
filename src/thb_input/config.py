@@ -31,6 +31,12 @@ class Settings(BaseSettings):
     extract_output_mode: Literal["json_schema", "json_object"] = "json_schema"
     extract_validation_retries: int = Field(default=2, ge=0, le=2)
     extract_timeout: float = Field(default=120.0, gt=0)
+    strategize_model: str | None = None
+    strategize_temperature: float = Field(default=0.0, ge=0, le=2)
+    strategize_max_tokens: int = Field(default=8192, ge=1)
+    strategize_output_mode: Literal["json_schema", "json_object"] = "json_schema"
+    strategize_validation_retries: int = Field(default=2, ge=0, le=2)
+    strategize_timeout: float = Field(default=120.0, gt=0)
 
 
 @lru_cache
