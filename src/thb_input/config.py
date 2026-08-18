@@ -1,0 +1,32 @@
+from functools import lru_cache
+from typing import Literal
+
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="THB_",
+        extra="ignore",
+    )
+
+    app_name: str = "THB Input"
+    env: str = "development"
+    log_level: str = "INFO"
+    llm_api_key: str | None = None
+    strip_model: str | None = None
+    llm_base_url: str = "https://api.openai.com/v1"
+    llm_timeout: float = Field(default=30.0, gt=0)
+    llm_max_retries: int = Field(default=2, ge=0, le=5)
+    strip_temperature: float = Field(default=0.0, ge=0, le=2)
+    strip_max_tokens: int = Field(default=4096, ge=1)
+    strip_output_mode: Literal["json_schema", "json_object"] = "json_schema"
+    llm_api_style: Literal["chat_completions", "responses"] = "chat_completions"
+    strip_validation_retries: int = Field(default=1, ge=0, le=2)
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()

@@ -1,0 +1,2 @@
+"""THB Strip cognition stage."""
+

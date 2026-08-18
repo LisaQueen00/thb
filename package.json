@@ -1,0 +1,15 @@
+{
+  "name": "thb",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=11 <12"
+  },
+  "scripts": {
+    "dev:web": "pnpm --filter @thb/web dev",
+    "build:web": "pnpm --filter @thb/web build",
+    "check:web": "pnpm --filter @thb/web check"
+  }
+}
