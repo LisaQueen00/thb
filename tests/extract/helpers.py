@@ -31,6 +31,28 @@ def empty_result(summary: str = "当前材料包含一项沟通事件。") -> di
     return {
         "analysis_version": "0.1",
         "event_summary": summary,
+        "pragmatic_interpretation": {
+            "explicit_content": [
+                {
+                    "content": summary,
+                    "supporting_segments": ["seg_001"],
+                }
+            ],
+            "implied_stances": [],
+            "contextual_implications": [],
+        },
+        "meaning_selection": {
+            "candidates": [
+                {
+                    "content": summary,
+                    "kind": "core_speech_act",
+                    "confidence": "high",
+                    "materiality": "high",
+                    "basis": "Core explicit communication content.",
+                    "supporting_segments": ["seg_001"],
+                }
+            ]
+        },
         "participants": [],
         "claims": [],
         "requests": [],

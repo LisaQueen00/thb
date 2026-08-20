@@ -1,1 +1,0 @@
-"""THB Strategize stage."""

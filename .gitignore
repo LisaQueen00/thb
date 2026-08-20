@@ -21,6 +21,9 @@ htmlcov/
 
 # Local development plans, progress reports, and developer notes
 docs/
+!docs/
+docs/*
+!docs/workflow-orchestration.md
 DEVELOPMENT*.md
 DEV_NOTES*.md
 PLAN*.md

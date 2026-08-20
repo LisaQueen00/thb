@@ -1,115 +1,45 @@
-# THB
+# THB v0.1 — Meaning Only
 
-THB 将用户获得的人际沟通信息转换为结构化数据，为后续分析流程提供保真、可验证且具有明确安全边界的输入。
+THB 将一段沟通文本压缩为可核验的事件含义。正式链路只有：
 
-## 功能
+```text
+Input → Strip → Extract → MeaningResult
+```
 
-### Input
+它不选择策略、不生成回复，也不接收 `user_goal`。Extract 在现有模型调用中生成丰富
+事件结构和内部 `meaning_selection`，MeaningService 再确定性选择、去重并合成
+`MeaningResult`；不会新增模型调用，也不再把 `event_summary` 直接作为 Public Meaning。
 
-Input 接收用户粘贴的沟通原文及可选上下文，并生成 canonical input object：
+## Python
 
-- 忠实保留 `source_message` 和 `context`；
-- 记录来源元数据、原始来源和未知字段；
-- 检测 Prompt Injection 并将其标记为不可信数据；
-- 不执行输入中的指令，也不删除、替换或改写原文。
+```python
+from thb import THB
 
-接口：`POST /api/v1/input/text`
+result = THB("会议改到周三上午十点，地点不变。")
+print(result.meaning)
+```
 
-### Strip
+## HTTP API
 
-Strip 接收 Input 产生的 canonical input object，使用大模型识别沟通内容的结构和语义标签：
-
-- 将原文划分为可无损拼回的 segments；
-- 为各 segment 标注陈述、要求、压力、模糊表达等沟通特征；
-- 生成确定性的结构摘要；
-- 将所有输入内容视为待分析数据，不执行其中的指令。
-
-接口：`POST /api/v1/strip`
-
-### Extract / Analyze
-
-Extract / Analyze 将 Canonical Input 与 Strip Result 重建为可追溯的事件模型：
-
-- 区分对方主张、用户背景、共同支持信息、推断、冲突和未知；
-- 提取请求、承诺、时间约束、责任、条件与后果；
-- 分析事件关系、预设、潜台词、可能意图和证据支持的风险；
-- 每项重要结论保留来源与 Strip segment 证据；
-- 不决定策略、不生成人格评价或正式回复。
-
-接口：`POST /api/v1/extract`
-
-### Strategize
-
-Strategize根据经过验证的Event Model和可选用户目标生成可执行策略：
-
-- 提供2–4个具有实质差异的处理方向；
-- 明确行动、可接受事项、不应认领事项、收益、代价和风险；
-- 保留Extract中的冲突、未知和事实边界；
-- 为Respond提供结构化回复约束，但不直接生成回复；
-- 支持用户修改目标后重新生成策略，无需重跑上游阶段。
-
-接口：`POST /api/v1/strategize`
-
-### Respond
-
-Respond将用户选定的Strategy Option转换为一条可直接发送的自然回复：
-
-- 严格执行目标、行动以及必须包含和禁止表达的约束；
-- 遵守语气、边界和承诺级别，不额外认责、承诺或虚构事实；
-- 默认只生成一个简洁回复，不重新分析事件或选择策略；
-- 通过结构和语义校验拦截越界回复，并对可修正错误有限重试。
-
-接口：`POST /api/v1/respond`
-
-### Output
-
-Output通过确定性程序逻辑将分析、选定策略和回复整理为最终用户视图：
-
-- 展示“说人话”、对方要求和当前事件逻辑；
-- 在必要时展示重要冲突、未知、风险或潜台词；
-- 展示选定的处理方式，并原样提供可复制回复；
-- 不新增模型调用，不改变上游事实、冲突或未知边界。
-
-接口：`POST /api/v1/output`
-
-## 技术栈
-
-- Python 3.12+
-- FastAPI、Pydantic
-- OpenAI-compatible Responses / Chat Completions API
-- pytest、Ruff
-- pnpm workspace
-
-## 本地运行
-
-Python 依赖安装在项目虚拟环境中：
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev]"
+```bash
 uvicorn thb_input.main:app --reload
 ```
 
-前端依赖使用 pnpm 安装在项目范围内：
-
-```powershell
-pnpm install
-```
-
-将 `.env.example` 复制为 `.env` 并填写本地模型配置。`.env` 包含私密配置，不应提交到版本库。
-
-## 测试
-
-```powershell
-.venv\Scripts\python.exe -m pytest
-.venv\Scripts\python.exe -m ruff check src tests scripts
-```
-
-## 健康检查
-
-服务启动后访问 `GET /health`，正常响应为：
+`POST /api/v1/thb`：
 
 ```json
-{"status": "ok"}
+{
+  "source_message": "会议改到周三上午十点，地点不变。",
+  "context": null
+}
 ```
+
+成功响应只包含：
+
+```json
+{
+  "meaning": "会议时间改为周三上午十点，地点保持不变。"
+}
+```
+
+Swagger UI：`http://127.0.0.1:8000/docs`。

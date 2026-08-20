@@ -165,6 +165,51 @@ class PossibleIntention(Inference):
     intention_id: str = Field(pattern=r"^intent_\d{3,}$")
 
 
+class PragmaticExplicitContent(StrictModel):
+    content: str = Field(min_length=1)
+    supporting_segments: list[str]
+
+
+class PragmaticInference(StrictModel):
+    content: str = Field(min_length=1)
+    confidence: Confidence
+    basis: str = Field(min_length=1)
+    supporting_segments: list[str]
+
+
+class PragmaticInterpretation(StrictModel):
+    """Internal Level 1/2/3 separation used to compose the public Meaning."""
+
+    explicit_content: list[PragmaticExplicitContent] = Field(min_length=1)
+    implied_stances: list[PragmaticInference]
+    contextual_implications: list[PragmaticInference]
+
+
+class MeaningCandidateKind(StrEnum):
+    CORE_SPEECH_ACT = "core_speech_act"
+    MATERIAL_STANCE = "material_stance"
+    FACT_BOUNDARY = "fact_boundary"
+    RESPONSIBILITY = "responsibility"
+    COMMITMENT = "commitment"
+    CONSEQUENCE = "consequence"
+    CONFLICT = "conflict"
+
+
+class MeaningCandidate(StrictModel):
+    content: str = Field(min_length=1)
+    kind: MeaningCandidateKind
+    confidence: Confidence
+    materiality: Confidence
+    basis: str = Field(min_length=1)
+    supporting_segments: list[str]
+
+
+class MeaningSelection(StrictModel):
+    """Internal selection plan composed deterministically by MeaningService."""
+
+    candidates: list[MeaningCandidate] = Field(min_length=1)
+
+
 class ConflictPosition(StrictModel):
     source: EvidenceSource
     content: str = Field(min_length=1)
@@ -211,6 +256,8 @@ class Risk(StrictModel):
 class ExtractResult(StrictModel):
     analysis_version: Literal["0.1"]
     event_summary: str = Field(min_length=1)
+    pragmatic_interpretation: PragmaticInterpretation
+    meaning_selection: MeaningSelection
     participants: list[Participant]
     claims: list[Claim]
     requests: list[Request]

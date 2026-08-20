@@ -1,0 +1,14 @@
+[
+  {"id":"improvement","source_message":"你工作优先级要排好。","context":"","expected_meaning":"对方认为你目前的工作优先级安排存在问题，并要求你调整好优先级。","forbidden":["为了施压"]},
+  {"id":"comparative_improvement","source_message":"以后沟通及时一点。","context":"","expected_meaning":"对方认为你此前或当前的沟通不够及时，希望之后提高及时性。","forbidden":["新制度"]},
+  {"id":"repetition","source_message":"以后别再拖到最后一天。","context":"","expected_meaning":"对方认为此前存在拖到最后才处理的情况，并要求之后避免再次发生。","forbidden":["一直故意"]},
+  {"id":"negative_question","source_message":"这个事情没有做吧？","context":"","expected_meaning":"对方在确认该事项是否完成，并倾向认为它可能尚未完成；实际情况仍未确认。","forbidden":["确实没有完成"]},
+  {"id":"normative_responsibility","source_message":"你本来就应该随叫随到。","context":"","expected_meaning":"对方要求你保持随时响应，并把这种状态描述成你本来就应承担的责任。","forbidden":["你确实有义务"]},
+  {"id":"neutral_request","source_message":"今天下午把最新版发我。","context":"","expected_meaning":"对方要求今天下午收到最新版。","forbidden":["此前拖延","做得不好"]},
+  {"id":"neutral_notice","source_message":"明天下午三点开会。","context":"","expected_meaning":"对方通知明天下午三点开会。","forbidden":["不满","施压"]},
+  {"id":"upward_report","source_message":"昨晚我已经和祝总汇报了。","context":"祝总是大领导。","expected_meaning":"对方表示昨晚已经向祝总汇报，但没有说明具体汇报内容。","forbidden":["为了施压","投诉","升级问题"]},
+  {"id":"explicit_consequence","source_message":"今天不处理，以后你自己看着办。","context":"","expected_meaning":"对方要求今天处理该事项，并以未说明的后续不利结果加强这一要求。","forbidden":["具体后果已经确定"]},
+  {"id":"ambiguous_combination","source_message":"你自己看着安排吧，我已经跟领导说过了。","context":"","expected_meaning":"对方让你自行安排，并表示已经向领导说过相关情况；具体汇报内容和其提及领导的目的并未说明。","forbidden":["为了威胁","已经投诉"]},
+  {"id":"new_communication_routine","source_message":"以后我们统一每天上午沟通一次。","context":"","expected_meaning":"对方提出以后统一在每天上午沟通一次。","forbidden":["此前沟通不及时"]},
+  {"id":"neutral_status_question","source_message":"发了吗？","context":"","expected_meaning":"对方在确认相关内容是否已经发送。","forbidden":["倾向认为尚未发送","确实没有发送"]}
+]

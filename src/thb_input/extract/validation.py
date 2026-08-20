@@ -5,6 +5,7 @@ from pydantic import BaseModel, ValidationError
 
 from thb_input.extract.errors import ExtractError, ExtractErrorCode
 from thb_input.extract.schemas import (
+    Confidence,
     EpistemicStatus,
     EvidenceSource,
     ExtractResult,
@@ -103,6 +104,17 @@ def validate_semantics(result: ExtractResult, record: InputRecord) -> None:
     if any(marker in result.event_summary.lower() for marker in internal_markers):
         raise _semantic_error("event_summary exposes internal analysis vocabulary")
 
+    meaning_candidates = result.meaning_selection.candidates
+    if not any(
+        item.kind.value == "core_speech_act"
+        and item.confidence is Confidence.HIGH
+        and item.materiality is Confidence.HIGH
+        for item in meaning_candidates
+    ):
+        raise _semantic_error(
+            "meaning_selection requires a high-confidence, high-materiality core speech act"
+        )
+
     _validate_unique_ids(result)
 
 
@@ -145,6 +157,10 @@ def _objects_with_evidence(result: ExtractResult) -> Iterable[BaseModel]:
         yield from getattr(result, field)
     for conflict in result.conflicts:
         yield from conflict.positions
+    yield from result.pragmatic_interpretation.explicit_content
+    yield from result.pragmatic_interpretation.implied_stances
+    yield from result.pragmatic_interpretation.contextual_implications
+    yield from result.meaning_selection.candidates
 
 
 def _epistemic_items(result: ExtractResult) -> Iterable[BaseModel]:

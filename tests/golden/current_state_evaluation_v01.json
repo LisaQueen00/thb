@@ -1,0 +1,12 @@
+[
+  {"id":"current_correction","source_message":"你工作优先级要排好。","context":"当前工作沟通。","expected_stance":"讲话者认为用户当前的工作优先级安排存在问题或没有达到其预期。","forbidden_stances":[]},
+  {"id":"future_preparation","source_message":"明天事情比较多，你工作优先级要排好。","context":"","expected_stance":null,"forbidden_stances":["当前的工作优先级安排存在问题"]},
+  {"id":"communication_correction","source_message":"以后沟通及时一点。","context":"","expected_stance":"讲话者认为用户此前或当前的沟通不够及时。","forbidden_stances":[]},
+  {"id":"future_situational_communication","source_message":"到了现场以后沟通要及时一点。","context":"","expected_stance":null,"forbidden_stances":["此前沟通不够及时"]},
+  {"id":"biased_negative_question","source_message":"这个事情怎么还没做？","context":"","expected_stance":"讲话者倾向认为该事项目前可能尚未完成。","forbidden_stances":["该事项确定尚未完成"]},
+  {"id":"neutral_status_question","source_message":"这个事情做了吗？","context":"","expected_stance":null,"forbidden_stances":["倾向认为尚未完成"]},
+  {"id":"repetition_correction","source_message":"以后别再拖到最后一天。","context":"","expected_stance":"讲话者认为此前存在拖到最后才处理的情况。","forbidden_stances":[]},
+  {"id":"preventive_instruction","source_message":"第一次做这个项目，注意别拖到最后一天。","context":"","expected_stance":null,"forbidden_stances":["此前存在拖到最后才处理"]},
+  {"id":"quality_correction","source_message":"以后材料质量要注意一点。","context":"","expected_stance":"讲话者认为用户当前或此前提交的材料质量存在不足。","forbidden_stances":[]},
+  {"id":"future_quality_standard","source_message":"明天给领导的材料，质量一定要把控好。","context":"","expected_stance":null,"forbidden_stances":["此前材料质量存在不足"]}
+]
